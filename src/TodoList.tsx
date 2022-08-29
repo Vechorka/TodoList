@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -27,11 +27,12 @@ export type TaskType = {
 
 }
 
-export const TodoList = (props: TodoListPropsType) => {
+export const TodoList = React.memo((props: TodoListPropsType) => {
+    console.log('todolist')
 
-    const addTask = (title:string) => {
+    const addTask = useCallback ((title:string) => {
         props.addTask(title, props.id)
-    }
+    }, [])
 
     const onAllClickHandler = () => {props.changeFilter('all', props.id)}
     const onActiveClickHandler = () => {props.changeFilter('active', props.id)}
@@ -43,6 +44,15 @@ export const TodoList = (props: TodoListPropsType) => {
     const changeToDoListTitle = (newTitle:string) => {
         props.changeTodoListTitle(props.id, newTitle)
 
+    }
+
+    let tasksForTodolist = props.tasks
+
+    if (props.filter === 'completed'){
+        tasksForTodolist = props.tasks.filter(t => t.isDone === true)
+    }
+    if (props.filter === 'active'){
+        tasksForTodolist = props.tasks.filter(t => t.isDone === false)
     }
 
     return (
@@ -85,6 +95,6 @@ export const TodoList = (props: TodoListPropsType) => {
                 </div>
             </div>
     );
-};
+});
 
 export default TodoList;
