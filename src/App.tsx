@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import TodoList, {TaskType} from "./TodoList";
+import {TaskType, TodoList} from "./TodoList";
 import {v1} from "uuid";
 import {ADDRCONFIG} from "dns";
 import {AddItemForm} from "./AddItemForm";
