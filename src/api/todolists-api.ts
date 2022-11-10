@@ -17,6 +17,7 @@ export type TodolistType = {
     title:string,
     addedDate:string,
     order:number
+    filter: 'all'| 'active' | 'completed'
 }
 
 export type ResponseType<D = {}> = {
@@ -68,6 +69,7 @@ type TaskType = {
     todoListId: string
     order: number
     addedDate: string
+    isDone: boolean
 }
 
 type GetTaskType = {

@@ -6,7 +6,27 @@ import {
     taskReducer
 } from './tasks-reducer';
 import {TaskStateType} from '../App';
-import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
+import {
+    addTodolistAC,
+    removeTodolistAC,
+    setTodolistsAC,
+    todolistsReducer
+} from "./todolists-reducer";
+import {v1} from "uuid";
+import {TodoListType} from "../AppWithRedux";
+
+let todolistId1: string
+let todolistId2: string
+let startState: Array<TodoListType> = []
+
+beforeEach(()=>{
+    todolistId1 = v1()
+    todolistId2 = v1()
+    startState = [
+        {id: todolistId1, title: 'What to learn', filter: 'all' },
+        {id: todolistId1, title: 'What to learn', filter: 'all' }
+    ]
+})
 
 test('correct task should be deleted from correct array', () => {
     const startState: TaskStateType = {
@@ -163,6 +183,15 @@ test('property with todolistId should be deleted', () => {
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).not.toBeDefined();
 });
+
+
+test ('todolists should be set to the state', () => {
+
+    const action = setTodolistsAC(startState)
+    const endState = todolistsReducer([], action)
+    expect(endState.length).toBe(2)
+
+})
 
 
 

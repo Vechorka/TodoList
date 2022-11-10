@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {TaskType, TodoList} from "./TodoList";
 import {AddItemForm} from "./AddItemForm";
@@ -7,12 +7,13 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
+    changeTodolistTitleAC, fetchTodolistsTC,
+    removeTodolistAC, setTodolistsAC,
 } from "./state/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
+import {todolistsAPI} from "./api/todolists-api";
 
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
@@ -34,6 +35,9 @@ function AppWithRedux() {
     const todolists = useSelector<AppRootState, Array<TodoListType>>(state => state.todolists)
     const tasks = useSelector<AppRootState, TaskStateType>(state => state.tasks)
 
+    useEffect(()=> {
+        dispatch(fetchTodolistsTC())
+    },[])
 
     const removeTask = useCallback ((id:string, todolistId: string) => {
         const action = removeTaskAC(id, todolistId)
