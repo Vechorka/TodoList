@@ -1,4 +1,6 @@
 import axios from "axios";
+import {useCallback} from "react";
+import {removeTaskTC} from "../state/tasks-reducer";
 
 const settings = {
     withCredentials: true,
@@ -17,7 +19,6 @@ export type TodolistType = {
     title:string,
     addedDate:string,
     order:number
-    filter: 'all'| 'active' | 'completed'
 }
 
 export type ResponseType<D = {}> = {
@@ -27,15 +28,16 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-type UpdateTaskType = {
+export type UpdateTaskType = {
     title: string
     description: string
-    completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }
+
+
 
 type ResponseTaskType<D = {
     item: {
@@ -57,19 +59,33 @@ type ResponseTaskType<D = {
     messages: Array<string>
 }
 
-type TaskType = {
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
+export type TaskType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
     todoListId: string
     order: number
     addedDate: string
-    isDone: boolean
 }
 
 type GetTaskType = {
@@ -90,7 +106,7 @@ export const todolistsAPI = {
         return promise
     },
     deleteTodolists(id: string) {
-        const promise = instance.delete<ResponseType>(`]todo-lists/${id}`)
+        const promise = instance.delete<ResponseType>(`todo-lists/${id}`)
         return promise
     },
     updateTodolists(id: string, title: string) {
@@ -106,8 +122,9 @@ export const todolistsAPI = {
     createTasks(todolistId: string, title: string) {
         return instance.post<ResponseTaskType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: title})
     },
-    updateTask(todolistId: string, id: string, title: string) {
-        const promise = instance.put<UpdateTaskType>(`todo-lists/${todolistId}/tasks/${id}`, {title: title})
+    updateTask(todolistId: string, id: string, model: UpdateTaskType) {
+        const promise = instance.put<TaskType>(`todo-lists/${todolistId}/tasks/${id}`, {model: model})
         return promise
     }
 }
+

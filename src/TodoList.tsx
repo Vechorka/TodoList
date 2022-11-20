@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect} from 'react';
-import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -7,6 +6,8 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "./Task";
 import {useDispatch} from "react-redux";
 import {fetchTasksTC} from "./state/tasks-reducer";
+import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 
 type TodoListPropsType = {
@@ -14,7 +15,7 @@ type TodoListPropsType = {
     title: string
     tasks: Array<TaskType>
     removeTask: (id: string, todolistId: string) => void
-    changeStatus: (taskID: string, isDone: boolean, todolistId: string) => void
+    changeStatus: (taskID: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskID: string, newTitle: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todolistId: string) => void
@@ -23,12 +24,7 @@ type TodoListPropsType = {
     changeTodoListTitle: (id: string, newTitle: string) => void
 }
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
 
-}
 
 export const TodoList = React.memo((props: TodoListPropsType) => {
     console.log('todolist')

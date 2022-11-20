@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
-import {todolistsAPI} from "../api/todolists-api";
+import {TaskPriorities, TaskStatuses, todolistsAPI, UpdateTaskType} from "../api/todolists-api";
+
 export default {
     title: 'API'
 }
@@ -115,7 +115,15 @@ export const UpdateTaskTitle = () => {
     const [title, setTitle] = useState<string>('')
 
         const updateTask = () => {
-            todolistsAPI.updateTask(todolistId, taskId, title)
+            const model: UpdateTaskType = {
+                description: '',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                title: '',
+                deadline: ''
+            }
+            todolistsAPI.updateTask(todolistId, taskId, model)
                 .then((res) => {
                     setState(res.data)
                 })
