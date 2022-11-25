@@ -36,8 +36,6 @@ export type UpdateTaskType = {
     deadline: string
 }
 
-
-
 type ResponseTaskType<D = {
     item: {
         description: string
@@ -92,7 +90,6 @@ type GetTaskType = {
     totalCount: number,
     error: string | null
 }
-
 
 
 export const todolistsAPI = {

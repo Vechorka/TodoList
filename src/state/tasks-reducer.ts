@@ -27,13 +27,12 @@ const initialState: TaskStateType = {
 
 export const taskReducer = (state: TaskStateType = initialState, action: ActionTypes): TaskStateType => {
     switch (action.type) {
-        case 'REMOVE-TASK': {
-            const stateCopy = {...state}
-            const tasks = state[action.todoListId]
-            const filteredTasks = tasks.filter(t => t.id !== action.taskId)
-            stateCopy[action.todoListId] = filteredTasks
-            return stateCopy
-        }
+        case 'REMOVE-TASK':
+            return {
+                ...state,
+                [action.todoListId]: state[action.todoListId].filter(t => t.id !== action.taskId)
+            }
+
         case 'ADD-TASK': {
             const stateCopy = {...state}
             const newTask = action.task
