@@ -1,6 +1,5 @@
 import axios from "axios";
-import {useCallback} from "react";
-import {removeTaskTC} from "../state/tasks-reducer";
+
 
 const settings = {
     withCredentials: true,
