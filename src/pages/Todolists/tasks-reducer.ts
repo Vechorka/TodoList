@@ -4,9 +4,9 @@ import {
     SetTodolistsActionType
 } from "./todolists-reducer";
 import {Dispatch} from "redux";
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskType} from "../api/todolists-api";
-import {TaskStateType} from '../app/App';
-import {AppRootState, ThunkTypes} from "./store";
+import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskType} from "../../api/todolists-api";
+import {TaskStateType} from '../../app/App';
+import {AppRootState, ThunkTypes} from "../../app/store";
 
 
 
