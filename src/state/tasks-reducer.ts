@@ -1,4 +1,3 @@
-import {v1} from "uuid";
 import {
     AddTodolistActionType,
     RemoveTodolistActionType,
@@ -6,8 +5,8 @@ import {
 } from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskType} from "../api/todolists-api";
-import {TaskStateType} from "../AppWithRedux";
-import {AppRootState} from "./store";
+import {TaskStateType} from '../app/App';
+import {AppRootState, ThunkTypes} from "./store";
 
 
 
@@ -33,26 +32,19 @@ export const taskReducer = (state: TaskStateType = initialState, action: ActionT
                 [action.todoListId]: state[action.todoListId].filter(t => t.id !== action.taskId)
             }
 
-        case 'ADD-TASK': {
-            const stateCopy = {...state}
-            const newTask = action.task
-            const tasks = stateCopy[newTask.todoListId]
-            const newTasks = [newTask, ...tasks]
-            stateCopy[newTask.todoListId] = newTasks
-            return stateCopy
-        }
-        case 'UPDATE-TASK': {
-            let todolistTasks = state[action.todoListId]
-            state[action.todoListId] = todolistTasks.map(t => t.id === action.taskId
-                ? {...t, ...action.model}
-                : t)
-            return ({...state})
-        }
-        case "ADD-TODOLIST":{
-            const stateCopy = {...state}
-            stateCopy[action.todolist.id] = []
-            return stateCopy
-        }
+        case 'ADD-TASK':
+            return {
+                ...state,
+                [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
+            }
+
+        case 'UPDATE-TASK':
+            return { ...state, [action.todoListId]: state[action.todoListId]
+                    .map(t => t.id === action.taskId ? {...t, ...action.model} : t)}
+
+        case "ADD-TODOLIST":
+            return {...state, [action.todolist.id]: []}
+
         case 'REMOVE-TODOLIST': {
             const stateCopy = {...state}
             delete stateCopy[action.todoListId]
@@ -65,11 +57,8 @@ export const taskReducer = (state: TaskStateType = initialState, action: ActionT
             })
             return stateCopy
         }
-        case "SET-TASKS":{
-            const stateCopy = {...state}
-            stateCopy[action.todolistId] = action.tasks
-            return stateCopy
-        }
+        case "SET-TASKS":
+            return{...state , [action.todolistId]: action.tasks}
 
         default:
             return state
@@ -98,7 +87,7 @@ export const fetchTasksTC:any = (todolistId: string) => {
     }
 }
 
-export const removeTaskTC = ( taskId: string, todolistId: string):any => {
+export const removeTaskTC = ( taskId: string, todolistId: string):ThunkTypes => {
     return (dispatch: Dispatch) => {
         todolistsAPI.deleteTask(todolistId, taskId)
             .then ( res => {
@@ -108,7 +97,7 @@ export const removeTaskTC = ( taskId: string, todolistId: string):any => {
     }
 }
 
-export const addTaskTC = (title:string, todolistId: string):any => {
+export const addTaskTC = (title:string, todolistId: string):ThunkTypes => {
     return (dispatch: Dispatch) => {
         todolistsAPI.createTasks(todolistId, title)
             .then ( res => {
@@ -128,10 +117,10 @@ export type UpdateDomainTaskModelType = {
     deadline?: string
 }
 
-export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string):any => {
+export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todoListId: string):ThunkTypes => {
     return (dispatch: Dispatch, geState:()=> AppRootState) => {
         const state = geState()
-        const task = state.tasks[todolistId].find(t => t.id === taskId)
+        const task = state.tasks[todoListId]?.find(t => t.id === taskId)
         if (!task){
             throw new Error('task is not found in the state')
             return
@@ -145,9 +134,9 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             deadline: task.deadline,
             ...domainModel
         }
-        todolistsAPI.updateTask(todolistId, taskId, apiModel)
+        todolistsAPI.updateTask(todoListId, taskId, apiModel)
             .then ( res => {
-                const action = updateTaskAC(taskId, domainModel, todolistId)
+                const action = updateTaskAC(taskId, domainModel, todoListId)
                 dispatch(action)
             })
     }

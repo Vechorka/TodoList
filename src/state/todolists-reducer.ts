@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {todolistsAPI, TodolistType} from "../api/todolists-api";
+import {ThunkTypes} from "./store";
 
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -61,7 +62,7 @@ export const fetchTodolistsTC:any = () => {
     }
 }
 
-export const removeTodolistTC = (todolistId: string):any => {
+export const removeTodolistTC = (todolistId: string):ThunkTypes => {
     return (dispatch: Dispatch) => {
         todolistsAPI.deleteTodolists(todolistId)
             .then ( res => {
@@ -71,7 +72,7 @@ export const removeTodolistTC = (todolistId: string):any => {
     }
 }
 
-export const addTodolistTC = (title:string):any => {
+export const addTodolistTC = (title:string):ThunkTypes => {
     return (dispatch: Dispatch) => {
         todolistsAPI.createTodolists(title)
             .then ( res => {
@@ -82,7 +83,7 @@ export const addTodolistTC = (title:string):any => {
     }
 }
 
-export const changeTodolistTitleTC = (id:string, title:string):any => {
+export const changeTodolistTitleTC = (id:string, title:string):ThunkTypes => {
     return (dispatch: Dispatch) => {
         todolistsAPI.updateTodolists(id, title)
             .then ( res => {

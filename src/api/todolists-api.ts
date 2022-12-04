@@ -119,7 +119,8 @@ export const todolistsAPI = {
         return instance.post<ResponseTaskType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: title})
     },
     updateTask(todolistId: string, id: string, model: UpdateTaskType) {
-        const promise = instance.put<TaskType>(`todo-lists/${todolistId}/tasks/${id}`, {model: model})
+        console.log(model)
+        const promise = instance.put<TaskType>(`todo-lists/${todolistId}/tasks/${id}`, model)
         return promise
     }
 }
