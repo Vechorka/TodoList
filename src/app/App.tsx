@@ -16,9 +16,11 @@ import {
     updateTaskTC
 } from "../pages/Todolists/tasks-reducer";
 
-import { useAppDispatch, useAppSelector} from "./store";
+import {AppRootState, useAppDispatch, useAppSelector} from "./store";
 import {TaskStatuses, TaskType} from "../api/todolists-api";
 import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
+import {useSelector} from "react-redux";
+import {RequestStatusType} from "./app-reducer";
 
 
 
@@ -30,6 +32,7 @@ export type TaskStateType = {
 
 
 function App() {
+    const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
 
     return (
         <div className="App">
@@ -44,7 +47,7 @@ function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                <LinearProgress />
+                {status === 'loading' && <LinearProgress />}
             </AppBar>
             <TodolistList/>
         </div>

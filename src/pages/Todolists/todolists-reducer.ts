@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {ThunkTypes} from "../../app/store";
+import {setStatusAC} from "../../app/app-reducer";
 
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -55,9 +56,11 @@ export const setTodolistsAC = (todolists: Array<TodolistType>)  => ({ type: 'SET
 //thunks
 export const fetchTodolistsTC:any = () => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistsAPI.getTodolists()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
+                dispatch(setStatusAC('succeeded'))
             })
     }
 }
@@ -74,11 +77,13 @@ export const removeTodolistTC = (todolistId: string):ThunkTypes => {
 
 export const addTodolistTC = (title:string):ThunkTypes => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistsAPI.createTodolists(title)
             .then ( res => {
                 const todolist = res.data.data.item
                 const action = addTodolistAC(todolist)
                 dispatch(action)
+                dispatch(setStatusAC('succeeded'))
             })
     }
 }
