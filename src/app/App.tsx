@@ -2,22 +2,23 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {TodoList} from "../pages/Todolists/todolist/TodoList";
 import {AddItemForm} from "../components/AddItemForm/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography, LinearProgress} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleTC, fetchTodolistsTC, FilterValuesType,
-    removeTodolistTC, TodolistDomainType,
+    removeTodolistTC,
 } from "../pages/Todolists/todolists-reducer";
 import {
     addTaskTC,
     removeTaskTC,
     updateTaskTC
 } from "../pages/Todolists/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState, useAppDispatch, useAppSelector} from "./store";
+
+import { useAppDispatch, useAppSelector} from "./store";
 import {TaskStatuses, TaskType} from "../api/todolists-api";
+import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 
 
 
@@ -30,11 +31,9 @@ export type TaskStateType = {
 
 function App() {
 
-
-
-
     return (
         <div className="App">
+            <CustomizedSnackbars/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start"  color="inherit" aria-label="menu">
@@ -45,6 +44,7 @@ function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                <LinearProgress />
             </AppBar>
             <TodolistList/>
         </div>
