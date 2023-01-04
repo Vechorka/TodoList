@@ -26,7 +26,11 @@ export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
 
-function App() {
+type PropsType = {
+    demo?: boolean
+}
+
+function App({demo = false}: PropsType) {
     const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
 
     return (
@@ -44,7 +48,7 @@ function App() {
                 </Toolbar>
                 {status === 'loading' && <LinearProgress />}
             </AppBar>
-            <TodolistList/>
+            <TodolistList demo={demo}/>
         </div>
     );
 }
@@ -122,17 +126,16 @@ export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) =>
                     return <Grid item key={tl.id}>
                         <Paper elevation={1} style={{padding: '10px'}}>
                             <TodoList
-                                id={tl.id}
-                                title={tl.title}
+                                todolist={tl}
                                 tasks={tasksForTodolist}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 changeStatus={changeStatus}
                                 changeTaskTitle={changeTaskTitle}
-                                filter={tl.filter}
                                 removeTodoList={removeTodoList}
                                 changeTodoListTitle={changeTodoListTitle}
+                                demo={demo}
                             />
                         </Paper>
                     </Grid>

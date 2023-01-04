@@ -4,17 +4,18 @@ import {Add, AddBox} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
     addItem: (title:string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormPropsType) => {
     console.log('Add item form')
     const [newTaskTitle, setNewTaskTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
 
-    const addItem = () => {
+    const addItemHandler = () => {
         if (newTaskTitle.trim())
         {
-            props.addItem(newTaskTitle.trim())
+            addItem(newTaskTitle.trim())
             setNewTaskTitle('')
         }
         else {
@@ -32,7 +33,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
             setError(null)
         }
         if (e.charCode === 13) {
-            addItem()
+            addItemHandler()
         }
     }
 
@@ -40,6 +41,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         <div>
             <TextField
                 value={newTaskTitle}
+                disabled={disabled}
                 variant={'outlined'}
                 label={'Type value'}
                 onChange={onChangeHandler}
@@ -49,7 +51,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
             />
 
 
-            <IconButton color={'primary'} size={'small'} onClick={addItem}> <AddBox/> </IconButton>
+            <IconButton color={'primary'} size={'small'} onClick={addItemHandler} disabled={disabled}> <AddBox/> </IconButton>
         </div>
     )
 } )
