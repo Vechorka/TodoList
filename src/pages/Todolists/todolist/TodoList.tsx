@@ -22,16 +22,19 @@ type TodoListPropsType = {
     filter: FilterValuesType
     removeTodoList: (todoListID: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
+    demo?: boolean
 }
 
 
 
-export const TodoList = React.memo((props: TodoListPropsType) => {
+export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType) => {
     console.log('todolist')
 
     const dispatch = useAppDispatch()
-
     useEffect(()=> {
+        if (demo){
+            return
+        }
         dispatch(fetchTasksTC(props.id))
     },[])
 

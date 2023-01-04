@@ -22,14 +22,9 @@ import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "./app-reducer";
 
-
-
-
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
-
-
 
 function App() {
     const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
@@ -53,18 +48,19 @@ function App() {
         </div>
     );
 }
-
-
 type TodolistListPropsType = {
-
+    demo?: boolean
 }
-export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
+export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) => {
     console.log('App with redux')
     const dispatch = useAppDispatch()
     const todolists = useAppSelector(state => state.todolists)
     const tasks = useAppSelector(state => state.tasks)
 
     useEffect(()=> {
+        if (demo){
+            return
+        }
         dispatch(fetchTodolistsTC())
     },[])
 
@@ -110,9 +106,9 @@ export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
     }, [])
 
     return (<Container fixed>
-        <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addToDoList} />
-        </Grid>
+            <Grid container style={{padding: '20px'}}>
+                <AddItemForm addItem={addToDoList} />
+            </Grid>
             <Grid container spacing={5}>{
                 todolists.map((tl) => {
                     let allTodolistTasks = tasks[tl.id]
@@ -143,9 +139,9 @@ export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
                 })
             }
             </Grid>
-    </Container>
+        </Container>
 
-        )
+    )
 }
 
 export default App
