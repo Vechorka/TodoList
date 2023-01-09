@@ -36,7 +36,7 @@ export type UpdateTaskType = {
     deadline: string
 }
 
-type ResponseTaskType<D = {
+export type ResponseTaskType<D = {
     item: {
         description: string
         title: string
@@ -119,8 +119,7 @@ export const todolistsAPI = {
         return instance.post<ResponseTaskType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: title})
     },
     updateTask(todolistId: string, id: string, model: UpdateTaskType) {
-        console.log(model)
-        const promise = instance.put<TaskType>(`todo-lists/${todolistId}/tasks/${id}`, model)
+        const promise = instance.put<ResponseTaskType<TaskType>>(`todo-lists/${todolistId}/tasks/${id}`, model)
         return promise
     }
 }
