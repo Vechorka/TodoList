@@ -22,7 +22,7 @@ import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "./app-reducer";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import {Login} from "../pages/Login";
+import {Login} from "../pages/Login/Login";
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
