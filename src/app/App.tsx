@@ -21,6 +21,8 @@ import {TaskStatuses, TaskType} from "../api/todolists-api";
 import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "./app-reducer";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {Login} from "../pages/Login";
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -34,22 +36,28 @@ function App({demo = false}: PropsType) {
     const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
 
     return (
-        <div className="App">
-            <CustomizedSnackbars/>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start"  color="inherit" aria-label="menu">
-                        <Menu />
-                    </IconButton>
-                    <Typography variant="h6" >
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-                {status === 'loading' && <LinearProgress />}
-            </AppBar>
-            <TodolistList demo={demo}/>
-        </div>
+        <BrowserRouter>
+            <div className="App">
+                <CustomizedSnackbars/>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton edge="start"  color="inherit" aria-label="menu">
+                            <Menu />
+                        </IconButton>
+                        <Typography variant="h6" >
+                            News
+                        </Typography>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                    {status === 'loading' && <LinearProgress />}
+                </AppBar>
+                    <Routes>
+                        <Route path={"/"} element={ <TodolistList demo={demo}/>} />
+                        <Route path={"/login"} element={<Login/>} />
+                    </Routes>
+
+            </div>
+        </BrowserRouter>
     );
 }
 type TodolistListPropsType = {
