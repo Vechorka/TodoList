@@ -4,7 +4,7 @@ import axios from "axios";
 const settings = {
     withCredentials: true,
     headers: {
-        "API-KEY": '1d1b3ca8-5b05-4217-b570-1b1a1d28e554'
+        "API-KEY": '37b1be86-82dd-4200-aa47-c132585677e8'
     }
 }
 
