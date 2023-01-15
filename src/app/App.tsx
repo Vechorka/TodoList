@@ -34,6 +34,7 @@ import {useSelector} from "react-redux";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {Login} from "../pages/Login/Login";
+import {logoutTC} from "../pages/Login/auth-reducer";
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -47,10 +48,16 @@ function App({demo = false}: PropsType) {
     const dispatch = useAppDispatch()
     const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
     const initialized = useSelector<AppRootState, boolean>(state=> state.app.isInitialized)
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+
 
     useEffect(()=> {
         dispatch(initializeAppTC())
     }, [])
+
+    const logoutHandler = useCallback(()=>{
+        dispatch(logoutTC())
+    },[])
 
     if (!initialized) {
         return <div style={{position: 'fixed',width: '100%', top:'40%', textAlign: 'center'}}><CircularProgress /></div>
@@ -68,7 +75,7 @@ function App({demo = false}: PropsType) {
                         <Typography variant="h6" >
                             News
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress />}
                 </AppBar>
