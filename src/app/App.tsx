@@ -2,7 +2,18 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {TodoList} from "../pages/Todolists/todolist/TodoList";
 import {AddItemForm} from "../components/AddItemForm/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography, LinearProgress} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    Paper,
+    Toolbar,
+    Typography,
+    LinearProgress,
+    CircularProgress
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
@@ -20,7 +31,7 @@ import {AppRootState, useAppDispatch, useAppSelector} from "./store";
 import {TaskStatuses, TaskType} from "../api/todolists-api";
 import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 import {useSelector} from "react-redux";
-import {RequestStatusType} from "./app-reducer";
+import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {Login} from "../pages/Login/Login";
 
@@ -33,7 +44,17 @@ type PropsType = {
 }
 
 function App({demo = false}: PropsType) {
+    const dispatch = useAppDispatch()
     const status = useSelector<AppRootState, RequestStatusType>(state=> state.app.status)
+    const initialized = useSelector<AppRootState, boolean>(state=> state.app.isInitialized)
+
+    useEffect(()=> {
+        dispatch(initializeAppTC())
+    }, [])
+
+    if (!initialized) {
+        return <div style={{position: 'fixed',width: '100%', top:'40%', textAlign: 'center'}}><CircularProgress /></div>
+    }
 
     return (
         <BrowserRouter>

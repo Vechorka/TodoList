@@ -7,7 +7,10 @@ import {Task} from "./Tasks/Task";
 import {fetchTasksTC} from "../tasks-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
-import {useAppDispatch} from "../../../app/store";
+import {useAppDispatch, AppRootState} from "../../../app/store";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
+
 
 
 type TodoListPropsType = {
@@ -26,11 +29,11 @@ type TodoListPropsType = {
 
 
 export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType) => {
-    console.log('todolist')
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
 
     const dispatch = useAppDispatch()
     useEffect(()=> {
-        if (demo){
+        if (demo || !isLoggedIn){
             return
         }
         dispatch(fetchTasksTC(props.todolist.id))
@@ -51,6 +54,10 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType)
     const changeToDoListTitle = useCallback((newTitle:string) => {
         props.changeTodoListTitle(props.todolist.id, newTitle)
     }, [props.changeTodoListTitle, props.todolist.id])
+
+    if(!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
 
     return (
             <div>
