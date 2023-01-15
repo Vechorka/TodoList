@@ -5,6 +5,7 @@
     "node": "16.14.2"
   },
   "private": true,
+  "homepage": "https://vechorka.github.io/TodoList/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -24,6 +25,7 @@
     "axios": "^0.27.2",
     "axois": "^0.0.1-security",
     "formik": "^2.2.9",
+    "gh-pages": "^4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
@@ -41,7 +43,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "deploy": "gh-pages -d build",
+    "predeploy": "yarn build"
   },
   "eslintConfig": {
     "extends": [

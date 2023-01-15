@@ -32,7 +32,7 @@ import {TaskStatuses, TaskType} from "../api/todolists-api";
 import {CustomizedSnackbars} from "../components/SnackBar/SnackBar";
 import {useSelector} from "react-redux";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {HashRouter, Routes, Route} from "react-router-dom";
 import {Login} from "../pages/Login/Login";
 import {logoutTC} from "../pages/Login/auth-reducer";
 
@@ -64,7 +64,7 @@ function App({demo = false}: PropsType) {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className="App">
                 <CustomizedSnackbars/>
                 <AppBar position="static">
@@ -86,7 +86,7 @@ function App({demo = false}: PropsType) {
                     </Routes>
 
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 type TodolistListPropsType = {
