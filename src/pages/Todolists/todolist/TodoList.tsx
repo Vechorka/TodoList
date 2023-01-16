@@ -4,13 +4,8 @@ import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from "./Tasks/Task";
-import {fetchTasksTC} from "../tasks-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
-import {useAppDispatch, AppRootState} from "../../../app/store";
-import {useSelector} from "react-redux";
-import {Navigate} from "react-router-dom";
-
 
 
 type TodoListPropsType = {
@@ -23,21 +18,12 @@ type TodoListPropsType = {
     addTask: (title: string, todolistId: string) => void
     removeTodoList: (todoListID: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
-    demo?: boolean
+
 }
 
 
 
-export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType) => {
-    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-
-    const dispatch = useAppDispatch()
-    useEffect(()=> {
-        if (demo || !isLoggedIn){
-            return
-        }
-        dispatch(fetchTasksTC(props.todolist.id))
-    },[])
+export const TodoList = React.memo((props: TodoListPropsType) => {
 
     const addTask = useCallback ((title:string) => {
         props.addTask(title, props.todolist.id)
@@ -54,10 +40,6 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType)
     const changeToDoListTitle = useCallback((newTitle:string) => {
         props.changeTodoListTitle(props.todolist.id, newTitle)
     }, [props.changeTodoListTitle, props.todolist.id])
-
-    if(!isLoggedIn) {
-        return <Navigate to={'/login'}/>
-    }
 
     return (
             <div>
