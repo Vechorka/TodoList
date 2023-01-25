@@ -7,26 +7,27 @@ import {Dispatch} from "redux";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskType} from "../../api/todolists-api";
 import {TaskStateType} from '../../app/App';
 import {AppRootState, ThunkTypes} from "../../app/store";
-import {setAppErrorAC, setAppStatusAC} from "../../app/app-reducer";
+import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
 
 
 
-type ActionTypes = ReturnType<typeof removeTaskAC> |
+type TasksActionTypes = ReturnType<typeof removeTaskAC> |
     RemoveTodolistActionType |
     ReturnType<typeof addTaskAC>|
     ReturnType<typeof updateTaskAC> |
     AddTodolistActionType |
     SetTodolistsActionType |
-    ReturnType<typeof setTasksAC>
+    ReturnType<typeof setTasksAC> |
+    AppActionsType
 
 
 const initialState: TaskStateType = {
 }
 
-export const taskReducer = (state: TaskStateType = initialState, action: ActionTypes): TaskStateType => {
+export const taskReducer = (state: TaskStateType = initialState, action: TasksActionTypes): TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {
@@ -78,8 +79,8 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
     ({type: 'SET-TASKS', tasks, todolistId}) as const
 
 //thunks
-export const fetchTasksTC:any = (todolistId: string) => {
-    return (dispatch: Dispatch) => {
+export const fetchTasksTC = (todolistId: string) => {
+    return (dispatch: Dispatch<TasksActionTypes>) => {
         dispatch(setAppStatusAC('loading'))
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
@@ -91,7 +92,7 @@ export const fetchTasksTC:any = (todolistId: string) => {
 }
 
 export const removeTaskTC = ( taskId: string, todolistId: string):ThunkTypes => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TasksActionTypes>) => {
         todolistsAPI.deleteTask(todolistId, taskId)
             .then ( res => {
                 const action = removeTaskAC(taskId, todolistId)
@@ -101,7 +102,7 @@ export const removeTaskTC = ( taskId: string, todolistId: string):ThunkTypes => 
 }
 
 export const addTaskTC = (title:string, todolistId: string):ThunkTypes => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<TasksActionTypes>) => {
         dispatch(setAppStatusAC('loading'))
         todolistsAPI.createTasks(todolistId, title)
             .then ( res => {
