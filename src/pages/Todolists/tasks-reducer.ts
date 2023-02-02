@@ -91,6 +91,7 @@ export const fetchTasksTC = (todolistId: string) => {
     }
 }
 
+
 export const removeTaskTC = ( taskId: string, todolistId: string):ThunkTypes => {
     return (dispatch: Dispatch<TasksActionTypes>) => {
         todolistsAPI.deleteTask(todolistId, taskId)
