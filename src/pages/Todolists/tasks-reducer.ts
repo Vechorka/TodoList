@@ -7,7 +7,7 @@ import {Dispatch} from "redux";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskType} from "../../api/todolists-api";
 import {TaskStateType} from '../../app/App';
 import {AppRootState, ThunkTypes} from "../../app/store";
-import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../../app/app-reducer";
+import { setAppErrorAC, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
@@ -20,8 +20,9 @@ type TasksActionTypes = ReturnType<typeof removeTaskAC> |
     ReturnType<typeof updateTaskAC> |
     AddTodolistActionType |
     SetTodolistsActionType |
-    ReturnType<typeof setTasksAC> |
-    AppActionsType
+    ReturnType<typeof setTasksAC>
+
+
 
 
 const initialState: TaskStateType = {
@@ -80,13 +81,13 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
 
 //thunks
 export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<TasksActionTypes>) => {
-        dispatch(setAppStatusAC('loading'))
+    return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
                 const tasks = res.data.items
                 dispatch(setTasksAC(tasks,todolistId))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             })
     }
 }
@@ -103,15 +104,15 @@ export const removeTaskTC = ( taskId: string, todolistId: string):ThunkTypes => 
 }
 
 export const addTaskTC = (title:string, todolistId: string):ThunkTypes => {
-    return (dispatch: Dispatch<TasksActionTypes>) => {
-        dispatch(setAppStatusAC('loading'))
+    return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
         todolistsAPI.createTasks(todolistId, title)
             .then ( res => {
                 if (res.data.resultCode === 0) {
                     const task = res.data.data.item
                     const action = addTaskAC(task)
                     dispatch(action)
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }

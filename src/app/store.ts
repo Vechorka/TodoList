@@ -20,8 +20,6 @@ export type DispatchType = ThunkDispatch<AppRootState, unknown, AnyAction>
 export const useAppDispatch = () => useDispatch<DispatchType>();
 export const useAppSelector: TypedUseSelectorHook<AppRootState> = useSelector;
 
-// export const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
-
 export const store = configureStore({
     reducer: rootReducers,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)

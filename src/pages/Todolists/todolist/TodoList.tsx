@@ -6,6 +6,8 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "./Tasks/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
+import {useAppDispatch} from "../../../app/store";
+import {fetchTasksTC} from "../tasks-reducer";
 
 
 type TodoListPropsType = {
@@ -18,12 +20,18 @@ type TodoListPropsType = {
     addTask: (title: string, todolistId: string) => void
     removeTodoList: (todoListID: string) => void
     changeTodoListTitle: (id: string, newTitle: string) => void
+    demo?: boolean
 
 }
-
-
-
-export const TodoList = React.memo((props: TodoListPropsType) => {
+export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType) => {
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (demo) {
+            return
+        }
+        const thunk = fetchTasksTC(props.todolist.id)
+        dispatch(thunk)
+    }, [])
 
     const addTask = useCallback ((title:string) => {
         props.addTask(title, props.todolist.id)
