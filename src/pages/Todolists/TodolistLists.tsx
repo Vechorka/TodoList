@@ -60,7 +60,7 @@ export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) =>
 
 
     const changeFilter = useCallback((value: FilterValuesType, todoListId: string) => {
-        const action = changeTodolistFilterAC(value, todoListId)
+        const action = changeTodolistFilterAC({id: todoListId, filter: value})
         dispatch(action)
     }, [])
 
