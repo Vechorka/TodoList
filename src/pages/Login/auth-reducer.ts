@@ -4,6 +4,7 @@ import {handleServerAppError, handleServerNetworkError} from "../../utils/error-
 import {ThunkTypes} from "../../app/store";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setAppStatusAC} from "../../app/app-reducer";
+import {AxiosError} from "axios";
 
 const initialState = {
      isLoggedIn: false
@@ -19,10 +20,12 @@ export const loginTC = createAsyncThunk('auth/login', async(param: LoginParamsTy
             }
             else {
                 handleServerAppError(res.data, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors} )
             }
         }
         catch(error) {
             handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({errors: [error], fieldsErrors: undefined} )
         }
 })
 
