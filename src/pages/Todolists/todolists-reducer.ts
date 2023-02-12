@@ -5,17 +5,8 @@ import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerNetworkError} from "../../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
-export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 
-// type TodolistsActionTypes =
-//     RemoveTodolistActionType |
-//     AddTodolistActionType |
-//     ReturnType<typeof changeTodolistTitleAC> |
-//     ReturnType<typeof changeTodolistFilterAC> |
-//     SetTodolistsActionType |
-//     ReturnType<typeof changeTodolistEntityStatusAC>
 
 export type FilterValuesType = 'all' | 'completed' | 'active'
 export type TodolistDomainType = TodolistType & {
@@ -63,28 +54,6 @@ export const {removeTodolistAC, addTodolistAC, changeTodolistTitleAC,
 
 
 export const todolistsReducer = slice.reducer
-//     (state: Array<TodolistDomainType> = initialState, action: TodolistsActionTypes): Array<TodolistDomainType> => {
-//     switch (action.type) {
-//         case 'REMOVE-TODOLIST':{
-//             return state.filter(tl => tl.id !== action.todoListId)
-//         }
-//
-//         case 'ADD-TODOLIST':
-//             return [...state, {...action.todolist, filter: 'all', entityStatus: "idle"}]
-//
-//         case 'CHANGE-TODOLIST-TITLE':
-//             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-//         case 'CHANGE-TODOLIST-FILTER':
-//             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-//         case "CHANGE-TODOLIST-ENTITY-STATUS":
-//             return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.status} : tl)
-//         case "SET-TODOLISTS":
-//             return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: "idle"}))
-//
-//         default:
-//             return state
-//     }
-// }
 
 //thunks
 export const fetchTodolistsTC = () => {
