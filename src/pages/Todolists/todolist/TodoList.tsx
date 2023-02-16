@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
-import {Button, IconButton} from "@material-ui/core";
+import {Button, IconButton, Paper} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from "./Tasks/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolists-api";
@@ -50,17 +50,19 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType)
     }, [props.changeTodoListTitle, props.todolist.id])
 
     return (
-            <div>
+            <Paper style={{padding: '10px', position: 'relative'}}>
+                <IconButton onClick={removeTodoList} disabled={props.todolist.entityStatus === 'loading'}
+                            style={{position: 'absolute', right:'5px', top: '5px'}}>
+                    <Delete />
+                </IconButton>
                 <h3><EditableSpan title={props.todolist.title} onChange={changeToDoListTitle} disabled={props.todolist.entityStatus === 'loading'}/>
-                    <IconButton onClick={removeTodoList} disabled={props.todolist.entityStatus === 'loading'}>
-                        <Delete />
-                    </IconButton>
                 </h3>
                 <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
                 <div>
                     {
                         props.tasks.map(t => <Task removeTask={props.removeTask} changeStatus={props.changeStatus} changeTaskTitle={props.changeTaskTitle} task={t} todolistId={props.todolist.id} key={t.id} />)
                     }
+                    { !props.tasks.length && <div style={{padding: '10px', color: 'grey'}}>No tasks</div> }
                 </div>
                 <div>
                     <Button size={'small'} color={props.todolist.filter === 'all' ? 'primary' : 'default'} variant={props.todolist.filter === 'all' ? 'contained' : 'text'} disableElevation
@@ -70,7 +72,7 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoListPropsType)
                     <Button size={'small'} color={props.todolist.filter === 'completed' ? 'primary' : 'default'} variant={props.todolist.filter === 'completed' ? 'contained' : 'text'} disableElevation
                          onClick={onCompletedClickHandler}>Completed</Button>
                 </div>
-            </div>
+            </Paper>
     );
 });
 

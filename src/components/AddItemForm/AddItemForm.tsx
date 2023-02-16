@@ -13,7 +13,7 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormP
     const [error, setError] = useState<string | null>(null)
 
     const addItemHandler = () => {
-        if (newTaskTitle.trim())
+        if (newTaskTitle.trim() !== '')
         {
             addItem(newTaskTitle.trim())
             setNewTaskTitle('')
@@ -51,7 +51,7 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormP
             />
 
 
-            <IconButton color={'primary'} size={'small'} onClick={addItemHandler} disabled={disabled}> <AddBox/> </IconButton>
+            <IconButton color={'primary'} size={'small'} onClick={addItemHandler} disabled={disabled} style={{marginLeft:'10px'}}> <AddBox/> </IconButton>
         </div>
     )
 } )

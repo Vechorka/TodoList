@@ -82,7 +82,8 @@ export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) =>
             <Grid container style={{padding: '20px'}}>
                 <AddItemForm addItem={addToDoList} />
             </Grid>
-            <Grid container spacing={5}>{
+            <Grid container spacing={5}>
+                {
                 todolists.map((tl) => {
                     let allTodolistTasks = tasks[tl.id]
                     let tasksForTodolist = allTodolistTasks
@@ -93,7 +94,7 @@ export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) =>
                         tasksForTodolist = allTodolistTasks.filter(t => !t.status)
                     }
                     return <Grid item key={tl.id}>
-                        <Paper elevation={1} style={{padding: '10px'}}>
+                        <div style={{width: '300px'}}>
                             <TodoList
                                 todolist={tl}
                                 tasks={tasksForTodolist}
@@ -105,7 +106,7 @@ export const TodolistList: React.FC<TodolistListPropsType> = ({demo = false}) =>
                                 removeTodoList={removeTodoList}
                                 changeTodoListTitle={changeTodoListTitle}
                             />
-                        </Paper>
+                        </div>
                     </Grid>
                 })
             }
