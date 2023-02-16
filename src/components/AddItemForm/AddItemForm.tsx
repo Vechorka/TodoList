@@ -13,7 +13,7 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormP
     const [error, setError] = useState<string | null>(null)
 
     const addItemHandler = () => {
-        if (newTaskTitle.trim() !== '')
+        if (newTaskTitle.trim())
         {
             addItem(newTaskTitle.trim())
             setNewTaskTitle('')
